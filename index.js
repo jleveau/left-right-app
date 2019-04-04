@@ -1,16 +1,27 @@
-const VoteController = require("./voteController.js");
-const Vote = require("./vote.js");
-const Concept = require("./concept.js");
+const VoteController = require("./vote/voteController.js");
+const ConceptController = require("./concept/conceptController.js");
+const mongoose = require('mongoose')
 
-const merguez = new Concept("merguez");
-const controller = new VoteController();
-controller.setConcepts([merguez]);
+const connectWithRetry = function () {
+    return mongoose.connect("mongodb://localhost:27018/myapp")
+        .then(() => {
+            console.log("Connecting to database")
+        })
+        .catch((err) => {
+            if (err) {
+                console.error(err)
+                setTimeout(connectWithRetry, 5000)
+            }
+        })
+}
 
-console.log(merguez.getOrientation());
-const vote1 = new Vote("merguez", "gauche");
-const vote2 = new Vote("merguez", "droite");
+connectWithRetry()
 
-controller.readVote(vote1);
-controller.readVote(vote2);
-controller.readVote(vote2);
-console.log(merguez.getOrientation());
+let db = mongoose.connection
+db.on("error", console.error.bind(console, "connection error:"))
+
+const voteController = new VoteController()
+const conceptController = new ConceptController()
+
+conceptController.getAll();
+
