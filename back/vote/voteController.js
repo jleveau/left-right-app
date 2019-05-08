@@ -7,7 +7,7 @@ module.exports = class VoteController{
 		Vote.create({
 			concept: concept_id,
 			orientation
-		}, (err, voteSaved) => {
+		}, (err) => {
 			if (err) {
 				console.err(err)
 			} else {
@@ -25,14 +25,4 @@ module.exports = class VoteController{
 		})
 	}
 
-	read(vote){
-		let monConcept = this.concepts.find((concept)=>{
-			return concept.name === vote.conceptId;
-		});
-		if(vote.orientation === "gauche"){
-			monConcept.voteGauche();
-		}else{
-			monConcept.voteDroite();
-		}
-	}
 }
