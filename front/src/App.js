@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Concept from './concept'
+import { rejects } from 'assert';
 
 class App extends React.Component {
 
@@ -11,18 +12,7 @@ class App extends React.Component {
 
     this.state = {
       new_concept: null,
-      concepts : []
     }
-    this.getConcepts()
-  }
-
-  getConcepts() {
-    axios.get('http://localhost:5000/concepts')
-      .then((response) => {
-        this.setState({
-          concepts: response.data
-        })
-    })
   }
 
   changeConcept(e) {
@@ -39,14 +29,10 @@ class App extends React.Component {
 
   render () {
     return  <div className="App">
-              <h1>Concepts : </h1>
-              {this.state.concepts.map((concept, index) => {
-                return <Concept key={index} name={concept.name}></Concept>
-              })}
-
+              <Concept></Concept>
               <input onChange={this.changeConcept}></input>
               <button onClick={this.createConcept} >Créer mon concept</button>
-             </div>;
+            </div>;
   }
  
 }

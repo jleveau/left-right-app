@@ -6,10 +6,8 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const PORT = 5000;
 
-
 const voteController = new VoteController()
 const conceptController = new ConceptController()
-
 
 const connectWithRetry = function () {
     return mongoose.connect("mongodb://localhost:27017/myapp")
@@ -28,7 +26,6 @@ connectWithRetry()
 
 const api = express();
 
-
 api.use(morgan("common"));  
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json())
@@ -46,6 +43,19 @@ api.get('/concepts', async (req, res) => {
     res.json(concepts);
 });
 
+api.get('/random-concept', async (req, res) => {
+    res.json(await conceptController.getRandom());
+});
+
+api.post('/vote', async (req, res) => {
+    try {
+        await voteController.create(req.body.concept, req.body.orientation)
+        res.sendStatus(200)
+    } catch(e) {
+        res.send(e).status(500)
+    }
+});
+
 api.post('/concept', async (req, res) => {
     try {
         await conceptController.create(req.body.concept)
@@ -54,13 +64,9 @@ api.post('/concept', async (req, res) => {
         res.send(e).status(500)
     }
 });
-  
-
-  
 
 let db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error:"))
-
 
 api.listen(PORT, function () {
     console.log(`App listening on port ${PORT}!`)

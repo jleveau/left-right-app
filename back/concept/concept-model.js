@@ -4,7 +4,10 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var conceptSchema = new Schema({
   name: String,
-  votes: [ObjectId]
+  votes: [{
+    type: ObjectId, 
+    ref: 'Vote'
+  }]
 });
 
 module.exports = mongoose.model('Concept', conceptSchema);

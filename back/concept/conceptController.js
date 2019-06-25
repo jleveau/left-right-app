@@ -6,6 +6,12 @@ module.exports = class ConceptController{
 	}
 
 	async getAll() {
-		return await Concept.find({}).exec()
+		return await Concept.find({}).populate('votes.orientation').exec()
+	}
+
+	async getRandom() {
+		const count = await Concept.count().exec()
+		var random = Math.floor(Math.random() * count)
+		return await Concept.findOne().skip(random).populate('votes.orientation').exec()
 	}
 }

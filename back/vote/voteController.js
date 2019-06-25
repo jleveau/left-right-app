@@ -3,26 +3,16 @@ const Vote = require('./vote-model')
 
 module.exports = class VoteController{
 
-	create(concept_id, orientation) {
+	async create(concept_id, orientation) {
 		Vote.create({
 			concept: concept_id,
 			orientation
-		}, (err) => {
-			if (err) {
-				console.err(err)
-			} else {
-			}
-		});
+		})
+		//TODO mettre a jour la liste des votes du concept
 	}
 
-	getAll() {
-		Vote.find({}, (err, concepts) => {
-			if (err) {
-				console.log(err)
-			} else {
-				console.log(concepts)
-			}
-		})
+	async getAll() {
+		return await Vote.find({})
 	}
 
 }
