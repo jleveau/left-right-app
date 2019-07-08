@@ -36,7 +36,7 @@ class Concept extends React.Component {
       axios.post('http://localhost:5000/vote',{
         orientation,
         concept: this.state.concept
-      })
+      }).then(() => {console.log(this.state.concept)})
   }
 
   voteLeft() {
@@ -51,7 +51,6 @@ class Concept extends React.Component {
 
 
   render () {
-    console.log(this.state.concept)
 
     if (! this.state.concept) {
       return null

@@ -47,12 +47,17 @@ api.get('/random-concept', async (req, res) => {
     res.json(await conceptController.getRandom());
 });
 
+api.get('/votes', async (req, res) => {
+    const votes = await voteController.getAll()
+    res.json(votes);
+});
+
 api.post('/vote', async (req, res) => {
     try {
         await voteController.create(req.body.concept, req.body.orientation)
         res.sendStatus(200)
     } catch(e) {
-        res.send(e).status(500)
+        res.send(e).status(500);
     }
 });
 

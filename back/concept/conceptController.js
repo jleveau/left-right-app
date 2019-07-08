@@ -1,4 +1,5 @@
-const Concept = require('./concept-model')
+const Concept = require('./concept-model');
+const Vote = require('../vote/vote-model')
 
 module.exports = class ConceptController{
 	async create(name){
@@ -6,12 +7,23 @@ module.exports = class ConceptController{
 	}
 
 	async getAll() {
-		return await Concept.find({}).populate('votes.orientation').exec()
+		return await Concept.find({}).populate('votes', '-_id').exec()
 	}
 
 	async getRandom() {
 		const count = await Concept.count().exec()
 		var random = Math.floor(Math.random() * count)
-		return await Concept.findOne().skip(random).populate('votes.orientation').exec()
+		return await Concept.findOne().skip(random).populate('votes', '-_id').exec()
 	}
+
+	async addVoteToConcept(vote, conceptId) {
+		await Concept.findOneAndUpdate({ _id: conceptId }, { $push: { votes: vote } }, { upsert:true, new:true },
+		function (error, success) {
+			if (error) {console.log(error)}
+		})
+	}
+
+	//TODO : une fonction qui compte le nombre de votes attachés à un concept et le renvoie pour affichage front
+	//TODO : une fonction DELETE
+
 }

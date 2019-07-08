@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Concept from './concept'
-import { rejects } from 'assert';
 
 class App extends React.Component {
 
@@ -9,10 +8,30 @@ class App extends React.Component {
     super(props)
     this.changeConcept = this.changeConcept.bind(this)
     this.createConcept = this.createConcept.bind(this)
+    this.getVotes = this.getVotes.bind(this)
 
     this.state = {
       new_concept: null,
+      concepts : []
     }
+    this.getConcepts()
+  }
+
+  getConcepts() {
+    axios.get('http://localhost:5000/concepts')
+      .then((response) => {
+        this.setState({
+          concepts: response.data
+        })
+    })
+  }
+
+  getVotes() {
+    axios.get('http://localhost:5000/votes')
+      .then((response) => {
+        console.log('réponse get all votes');
+        console.log(response);
+    })
   }
 
   changeConcept(e) {
@@ -29,9 +48,14 @@ class App extends React.Component {
 
   render () {
     return  <div className="App">
-              <Concept></Concept>
+              <h1>Concepts :</h1>
+              {this.state.concepts.map((concept, index) => {
+                return <Concept key={index} name={concept.name}></Concept>
+              })}
+
               <input onChange={this.changeConcept}></input>
               <button onClick={this.createConcept} >Créer mon concept</button>
+              <button onClick={this.getVotes} >All votes in console</button>
             </div>;
   }
  

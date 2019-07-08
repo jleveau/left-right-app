@@ -1,18 +1,28 @@
+const ConceptController = require('../concept/conceptController');
 const Vote = require('./vote-model')
 
+const conceptController = new ConceptController
 
 module.exports = class VoteController{
 
-	async create(concept_id, orientation) {
+	async create(concept, orientation) {
+		console.log(concept);
 		Vote.create({
-			concept: concept_id,
+			concept: concept._id,
 			orientation
+		}, function (err, room) {
+			if (err) {
+
+			} else {
+				conceptController.addVoteToConcept(room, concept._id);
+			}
 		})
-		//TODO mettre a jour la liste des votes du concept
 	}
 
 	async getAll() {
-		return await Vote.find({})
+		return await Vote.find({}).populate('concept', '-_id').exec()
 	}
+
+	//TODO : une fonction DELETE
 
 }
