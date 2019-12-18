@@ -61,6 +61,16 @@ api.post('/vote', async (req, res) => {
     }
 });
 
+api.get('/vote-count/:conceptId', async (req, res) => {
+    try {
+        const conceptId = req.query.conceptId
+        const voteCount = await conceptController.getVoteCount(conceptId)
+        res.json(voteCount);
+    } catch(e) {
+        res.send(e).status(500);
+    }
+});
+
 api.post('/concept', async (req, res) => {
     try {
         await conceptController.create(req.body.concept)

@@ -1,5 +1,4 @@
 const Concept = require('./concept-model');
-const Vote = require('../vote/vote-model')
 
 module.exports = class ConceptController{
 	async create(name){
@@ -21,6 +20,10 @@ module.exports = class ConceptController{
 		function (error, success) {
 			if (error) {console.log(error)}
 		})
+	}
+
+	async getVoteCount(conceptId) {
+		return await Concept.aggregate([{ $match: { _id: conceptId } }, { $project: { votes: { $size: '$votes'} } }])
 	}
 
 	//TODO : une fonction qui compte le nombre de votes attachés à un concept et le renvoie pour affichage front

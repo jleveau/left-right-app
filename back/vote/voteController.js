@@ -6,7 +6,6 @@ const conceptController = new ConceptController
 module.exports = class VoteController{
 
 	async create(concept, orientation) {
-		console.log(concept);
 		Vote.create({
 			concept: concept._id,
 			orientation

@@ -29,7 +29,6 @@ class App extends React.Component {
   getVotes() {
     axios.get('http://localhost:5000/votes')
       .then((response) => {
-        console.log('réponse get all votes');
         console.log(response);
     })
   }
@@ -54,8 +53,8 @@ class App extends React.Component {
               })}
 
               <input onChange={this.changeConcept}></input>
-              <button onClick={this.createConcept} >Créer mon concept</button>
-              <button onClick={this.getVotes} >All votes in console</button>
+              <button onClick={this.createConcept}>Créer mon concept</button>
+              <button onClick={this.getVotes}>All votes in console</button>
             </div>;
   }
  
