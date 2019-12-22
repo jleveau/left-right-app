@@ -80,6 +80,14 @@ api.post('/concept', async (req, res) => {
     }
 });
 
+api.delete('/concept/delete/:conceptId', async (req, res) => {
+    try {
+        await conceptController.delete(req.query.conceptId)
+    } catch(e) {
+        res.send(e).status(500)
+    }
+})
+
 let db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error:"))
 

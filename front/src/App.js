@@ -45,6 +45,7 @@ class App extends React.Component {
     }).then(() => this.getConcepts())
   }
 
+
   render () {
     return  <div className="App">
               <h1>Concepts :</h1>

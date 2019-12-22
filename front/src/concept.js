@@ -11,8 +11,9 @@ class Concept extends React.Component {
       concept : null,
       score : 0,
     }
-    this.voteLeft = this.voteLeft.bind(this)
-    this.voteRight = this.voteRight.bind(this)
+    this.voteLeft       = this.voteLeft.bind(this)
+    this.voteRight      = this.voteRight.bind(this)
+    this.deleteConcept  = this.deleteConcept.bind(this)
 
     this.changeConcept()
   }
@@ -61,6 +62,16 @@ class Concept extends React.Component {
     })
   }
 
+  deleteConcept() {
+    const conceptId = this.state.concept._id
+    console.log('pre-delete :' + conceptId)
+    axios.delete('http://localhost:5000/concept/delete/:conceptId', {
+      params: {
+        conceptId: conceptId
+      }
+    })
+  }
+
   refreshState(concept, score) {
     this.setState({
       concept: concept,
@@ -97,6 +108,7 @@ class Concept extends React.Component {
         <br></br>
         <button onClick={this.voteLeft}>left</button> 
         <button onClick={this.voteRight}>right</button>
+        <button onClick={this.deleteConcept}>delete</button>
     </div>
   }
  
