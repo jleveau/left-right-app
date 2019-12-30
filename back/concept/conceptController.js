@@ -19,7 +19,7 @@ module.exports = class ConceptController {
 
 	async getRandom() {
 		const count = await Concept.count().exec()
-		var random = Math.floor(Math.random() * count)
+		const random = Math.floor(Math.random() * count)
 		return await Concept.findOne().skip(random).populate('votes', '-_id').exec()
 	}
 
@@ -28,10 +28,6 @@ module.exports = class ConceptController {
 		function (error, success) {
 			if (error) {console.log(error)}
 		})
-	}
-
-	async getVoteCount(conceptId) {
-		return await Concept.aggregate([{ $match: { _id: conceptId } }, { $project: { votes: { $size: '$votes'} } }])
 	}
 
 }

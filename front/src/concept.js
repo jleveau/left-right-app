@@ -26,56 +26,32 @@ class Concept extends React.Component {
     })
   }
 
-  getVoteCount(concept) {
-    const conceptId = concept._id
-    return new Promise((resolve, reject) => {
-      axios.get('http://localhost:5000/vote-count/:conceptId',{
-        params: {
-          conceptId: conceptId
-        }
-      }).then(response => {
-        let numberOfVotes
-        if (response.data[0]) {
-          console.log(response.data[0].votes)
-          numberOfVotes = response.data[0].votes
-          resolve(numberOfVotes)
-        } else {
-          console.log(response.data)
-          numberOfVotes = 0
-          resolve(numberOfVotes) 
-        }
-      }).catch(e => reject(e))
-    })
+  getVoteCount(votes) {
+    const leftVotes = votes.filter(vote => vote.orientation === 'left')
+    const rightVotes = votes.filter(vote => vote.orientation === 'right')
+
+    return rightVotes.length - leftVotes.length
   }
 
   changeConcept() {
     this.getRandomConcept().then((concept) => {
+
+      const voteCount = this.getVoteCount(concept.votes)
+
       this.setState({
-        concept: concept
-      })
-      this.getVoteCount(concept).then((voteCount) => {
-        console.log(voteCount)
-        this.setState({
-          score: voteCount
-        })
+        concept: concept,
+        score: voteCount
       })
     })
   }
 
   deleteConcept() {
     const conceptId = this.state.concept._id
-    console.log('pre-delete :' + conceptId)
+    
     axios.delete('http://localhost:5000/concept/delete/:conceptId', {
       params: {
         conceptId: conceptId
       }
-    })
-  }
-
-  refreshState(concept, score) {
-    this.setState({
-      concept: concept,
-      score: score,
     })
   }
 
