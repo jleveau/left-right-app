@@ -3,7 +3,7 @@ const Vote = require('./vote-model')
 
 const conceptController = new ConceptController
 
-module.exports = class VoteController{
+module.exports = class VoteController {
 
 	async create(concept, orientation) {
 		Vote.create({
@@ -17,9 +17,24 @@ module.exports = class VoteController{
 			}
 		})
 	}
+	
+	async deleteUnattached() {
+		await Vote.deleteMany( { 'concept': null }, function(err, res) {
+			if (err) {
+				return err
+			} else {
+				return res.deletedCount
+			}
+		})
+	}
+
+	//test
+	getUnattached() {
+		return Vote.find( { concept: null } ).exec();
+	}
 
 	async getAll() {
-		return await Vote.find({}).populate('concept', '-_id').exec()
+		return await Vote.find({}).populate('concept', '-_id').exec();
 	}
 
 	//TODO : une fonction DELETE

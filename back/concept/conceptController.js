@@ -1,6 +1,7 @@
 const Concept = require('./concept-model');
 
-module.exports = class ConceptController{
+module.exports = class ConceptController {
+
 	async create(name) {
 		await Concept.create({name})
 	}
@@ -32,9 +33,5 @@ module.exports = class ConceptController{
 	async getVoteCount(conceptId) {
 		return await Concept.aggregate([{ $match: { _id: conceptId } }, { $project: { votes: { $size: '$votes'} } }])
 	}
-
-
-
-	//TODO : une fonction DELETE
 
 }
