@@ -19,22 +19,20 @@ module.exports = class VoteController {
 	}
 	
 	async deleteUnattached() {
-		await Vote.deleteMany( { 'concept': null }, function(err, res) {
-			if (err) {
-				return err
-			} else {
-				return res.deletedCount
-			}
-		})
-	}
+        const votes = await Vote.find({}).populate('concept', '_id')
+		let toDelete = votes.filter(vote => vote.concept === null).map(vote => vote._id)
+		
+        return Vote.deleteMany({ '_id': { $in: toDelete } }).exec();
+    }
 
 	//test
-	getUnattached() {
-		return Vote.find( { concept: null } ).exec();
-	}
+	async getUnattached() {
+        const votes = await Vote.find({}).populate('concept', '_id').exec();
+        return votes.filter(vote => vote.concept === null)
+    }
 
-	async getAll() {
-		return await Vote.find({}).populate('concept', '-_id').exec();
+	getAll() {
+		return Vote.find({}).populate('concept', '-_id').exec();
 	}
 
 	//TODO : une fonction DELETE

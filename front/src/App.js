@@ -39,7 +39,7 @@ class App extends React.Component {
   deleteUnattachedVotes() {
     axios.delete('http://localhost:5000/vote/delete/unattached')
       .then((response) => {
-        console.log(response);
+        console.log('Deleted ' + response.data.deletedCount + ' votes.');
       })
   }
 
