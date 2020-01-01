@@ -81,12 +81,12 @@ class Concept extends React.Component {
     return  <div>
       <h1>{this.state.concept.name}</h1>
       <br></br>
-      ... est-ce de gauche ou de droite ?
+      ... est-ce de gôche ou de drouate ?
       <br></br> <br></br>
         Score : {this.state.score}
         <br></br> <br></br>
-        <button onClick={this.voteLeft}>De gauche !</button> 
-        <button onClick={this.voteRight}>De droite !</button>
+        <button onClick={this.voteLeft}>De gôche !</button> 
+        <button onClick={this.voteRight}>De drouate !</button>
         <br></br> <br></br>
         <button onClick={this.deleteConcept}>Supprimer</button>
     </div>

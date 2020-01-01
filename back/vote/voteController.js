@@ -13,6 +13,7 @@ module.exports = class VoteController {
 			if (err) {
 
 			} else {
+				console.log(room);
 				conceptController.addVoteToConcept(room, concept._id);
 			}
 		})

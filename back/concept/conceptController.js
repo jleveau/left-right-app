@@ -24,7 +24,7 @@ module.exports = class ConceptController {
 	}
 
 	async addVoteToConcept(vote, conceptId) {
-		await Concept.findOneAndUpdate({ _id: conceptId }, { $push: { votes: vote } }, { upsert:true, new:true },
+		Concept.findOneAndUpdate({ _id: conceptId }, { $push: { votes: vote._id } }, { upsert:true, new:true },
 		function (error, success) {
 			if (error) {console.log(error)}
 		})
